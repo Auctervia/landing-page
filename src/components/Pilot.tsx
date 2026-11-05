@@ -58,7 +58,7 @@ export function Pilot() {
               {[2, 1, 0].map((k) => (
                 <Box key={k} x={0} y={plinths[k].y} w={60} d={60} h={plinths[k].h} />
               ))}
-              <Box x={19} y={19} z={24} w={22} d={22} h={18} data-crate className={s.crate} />
+              <Box x={19} y={19} z={24} w={22} d={22} h={22} data-crate className={s.crate} />
             </svg>
           </figure>
         </div>
