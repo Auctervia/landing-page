@@ -6,9 +6,10 @@
   /* centred a little below the middle, leaving room for the headline above it */
   top: calc(50% + var(--nav-h) / 2 + 48px);
   z-index: 20;
+  --card-h: 504px;
   width: 300px;
-  height: 504px;
-  margin: -252px 0 0 -150px;
+  height: var(--card-h);
+  margin: calc(var(--card-h) / -2) 0 0 -150px;
   transform-origin: 0 0;
   opacity: 0;
   visibility: hidden;
@@ -275,5 +276,15 @@
 @keyframes blink {
   50% {
     opacity: 0.2;
+  }
+}
+
+/* Phones: a slightly shorter card (it only had empty space in the middle). */
+@media (max-width: 767px) {
+  .subject {
+    --card-h: 440px;
+  }
+  .stillCard {
+    height: 440px;
   }
 }

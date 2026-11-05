@@ -262,8 +262,50 @@
 }
 
 @media (max-width: 900px) {
+  /* The global .section padding shorthand zeroes the block padding above, so on phones the heading sat on the rule line. */
+  section.bento {
+    padding-block: 64px;
+  }
   .card,
   .wide {
     grid-column: 1 / -1;
+  }
+}
+
+/* Phones: the product slices sit in the card's flow (not pinned over its text) and the ledger drops the hash column. */
+@media (max-width: 640px) {
+  .card {
+    min-height: 0;
+    padding: 20px 16px 0;
+  }
+  .stageArea {
+    display: flex;
+    align-items: flex-end;
+    min-height: 0;
+    margin-top: 20px;
+  }
+  .panel,
+  .ledger,
+  .sandbox {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    margin: 0 -2px -2px auto;
+  }
+  .rec {
+    grid-template-columns: 44px 1fr auto;
+    gap: 10px;
+  }
+  .hash {
+    display: none;
+  }
+  .case {
+    gap: 8px;
+    padding: 9px 12px;
+  }
+  .case span:last-child {
+    text-align: right;
   }
 }

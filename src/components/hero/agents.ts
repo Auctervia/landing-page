@@ -1,6 +1,6 @@
 // Agent cursors working across the suite. Each agent is a looping GSAP timeline (the one clock) that
 // moves its cursor to real elements ([data-target]), clicks them and types into [data-type] fields.
-// park()/unpark() hand control to the scroll: every loop pauses and Rune (support) settles on
+// park()/unpark() hand control to the scroll: every loop pauses and Lyra (support) settles on
 // "Issue refund", which marks the refund card as pending.
 import { gsap } from 'gsap';
 
@@ -99,7 +99,7 @@ export function startAgents(root: HTMLElement) {
     if (visible(cursor(id))) loops.push(build(id, steps, delay, reset, n++ % 2 ? -0.18 : 0.18));
   };
 
-  // Rune (support): checks the ticket and the payment tool, then presses Issue refund on its own proposal.
+  // Lyra (support): checks the ticket and the payment tool, then presses Issue refund on its own proposal.
   add(
     'rune',
     [
@@ -115,7 +115,7 @@ export function startAgents(root: HTMLElement) {
     0,
     () => card?.classList.remove('is-pending'),
   );
-  // Aether (sales): tags Figma as an expansion account in the customers table.
+  // Nova (sales): tags Figma as an expansion account in the customers table.
   add(
     'aether',
     [{ go: 'tag', d: 1.3 }, { click: 'tag' }, { type: 'tag', text: 'Expansion' }, { wait: 2 }],
@@ -124,7 +124,7 @@ export function startAgents(root: HTMLElement) {
       if (tag) tag.textContent = '';
     },
   );
-  // Syntax (workflows): adds a step to the refund workflow, then runs it.
+  // Flux (workflows): adds a step to the refund workflow, then runs it.
   add('syntax', [{ go: 'wf-node', d: 1.2 }, { click: 'wf-node' }, { wait: 0.8 }, { go: 'wf-run', d: 1 }, { click: 'wf-run' }, { wait: 1.6 }], 0.9);
   // Clara (billing): connects Stripe from the app library.
   add(
@@ -135,7 +135,7 @@ export function startAgents(root: HTMLElement) {
       if (connect) connect.textContent = 'Connect';
     },
   );
-  // Theo (ops): deploys from the terminal.
+  // Atlas (ops): deploys from the terminal.
   add(
     'theo',
     [

@@ -414,7 +414,7 @@
   color: var(--tx2);
   font-variant-numeric: tabular-nums;
 }
-/* The tag Aether types in; hidden until it has text. */
+/* The tag Nova types in; hidden until it has text. */
 .tagNew:has(span:empty) {
   display: none;
 }
@@ -505,7 +505,7 @@
 }
 
 /* The card that lifts: the top of it matches the top of the x-ray card. */
-/* Inline in Rune's reply: a flat attachment, like the tool chips, not a card floating over the thread. */
+/* Inline in Lyra's reply: a flat attachment, like the tool chips, not a card floating over the thread. */
 .action {
   margin-top: 10px;
   padding: 12px 14px;
@@ -593,16 +593,21 @@
 .models {
   display: inline-flex;
 }
-.models img {
-  padding: 2px;
+.modelDot {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--bg3);
   box-shadow: 0 0 0 1.5px var(--white);
-  width: 16px;
-  height: 16px;
 }
-.models img + img {
+.modelDot + .modelDot {
   margin-left: -4px;
+}
+.modelDot img {
+  width: 11px;
+  height: 11px;
 }
 .send {
   display: grid;

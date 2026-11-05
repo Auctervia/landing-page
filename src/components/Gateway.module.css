@@ -195,23 +195,52 @@
     gap: 16px;
     padding-top: 72px;
   }
+  /* Four thin progress pills (not clickable) on top, each filling over its own step; only the current step's text shows. */
   .steps {
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    column-gap: 6px;
+    row-gap: 0;
   }
   .step {
+    display: contents;
+  }
+  .bar {
+    grid-row: 1;
+    margin-bottom: 0;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .step:nth-child(1) .bar {
+    grid-column: 1;
+  }
+  .step:nth-child(2) .bar {
+    grid-column: 2;
+  }
+  .step:nth-child(3) .bar {
+    grid-column: 3;
+  }
+  .step:nth-child(4) .bar {
+    grid-column: 4;
+  }
+  .step h3,
+  .step p {
     display: none;
+    grid-column: 1 / -1;
   }
   .step h3 {
+    grid-row: 2;
+    margin-top: 16px;
     font-size: 18px;
   }
-  .gateway[data-step='0'] .step[data-i='0'],
-  .gateway[data-step='1'] .step[data-i='1'],
-  .gateway[data-step='2'] .step[data-i='2'],
-  .gateway[data-step='3'] .step[data-i='3'] {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-row: 1;
+  .step p {
+    grid-row: 3;
+    margin-top: 4px;
+  }
+  .gateway[data-step='0'] .step[data-i='0'] :is(h3, p),
+  .gateway[data-step='1'] .step[data-i='1'] :is(h3, p),
+  .gateway[data-step='2'] .step[data-i='2'] :is(h3, p),
+  .gateway[data-step='3'] .step[data-i='3'] :is(h3, p) {
+    display: block;
   }
   .tag {
     font-size: 12px;

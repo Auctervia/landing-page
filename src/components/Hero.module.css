@@ -235,10 +235,10 @@
     top: calc(var(--nav-h) + 16px);
   }
   .h2 {
-    font-size: 28px;
+    font-size: 32px;
   }
   .copy p {
     margin-top: 8px;
-    font-size: 15px;
+    font-size: 16px;
   }
 }

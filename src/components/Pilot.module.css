@@ -22,6 +22,9 @@
   max-width: 12ch;
 }
 
+.pills {
+  display: none;
+}
 .stages {
   list-style: none;
   display: grid;
@@ -96,6 +99,33 @@
   }
   .figure svg {
     max-height: 32svh;
+  }
+  .pills {
+    display: flex;
+    gap: 6px;
+  }
+  .pill {
+    flex: 1;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--hairline);
+    overflow: hidden;
+  }
+  .pill span {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .stages {
+    border-left: 0;
+  }
+  .stage {
+    padding-left: 0;
+  }
+  .stage::before {
+    display: none;
   }
   /* One stage at a time, like Gateway. */
   .stage {

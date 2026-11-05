@@ -33,6 +33,9 @@ export function Pilot() {
     tl.to(crate, { keyframes: [{ y: -50, duration: 0.06 }, { ...hop(1), duration: 0.1 }], ease: 'power2.inOut' }, 0.24)
       .to(crate, { keyframes: [{ y: hop(1).y - 50, duration: 0.06 }, { ...hop(2), duration: 0.1 }], ease: 'power2.inOut' }, 0.58)
       .to({}, { duration: 0.1 });
+    // Mobile progress pills: each fills over its own step (steps change at 0.36 and 0.7 of the 0.84s timeline).
+    const [p0, p1, p2] = q('[data-pbar]');
+    tl.to(p0, { scaleX: 1, duration: 0.302 }, 0).to(p1, { scaleX: 1, duration: 0.286 }, 0.302).to(p2, { scaleX: 1, duration: 0.252 }, 0.588);
   });
 
   return (
@@ -43,6 +46,13 @@ export function Pilot() {
             <h2 id="pilot-title" data-shimmer>
               Start with one workflow. Grow to every release.
             </h2>
+            <div className={s.pills} aria-hidden="true">
+              {stages.map((st) => (
+                <span key={st.t} className={s.pill}>
+                  <span data-pbar />
+                </span>
+              ))}
+            </div>
             <ol className={s.stages}>
               {stages.map((st, i) => (
                 <li key={st.t} className={s.stage} data-i={i}>

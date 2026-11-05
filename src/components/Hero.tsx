@@ -52,19 +52,19 @@ export function Hero() {
         const x = suite.offsetLeft + o.x * kk;
         const y = suite.offsetTop - shift() + o.y * kk;
         const sc = (o.w * kk) / 300;
-        return { x: x - subject.offsetLeft, y: y - subject.offsetTop, scale: sc, clip: 504 - (o.h * kk) / sc };
+        return { x: x - subject.offsetLeft, y: y - subject.offsetTop, scale: sc, clip: subject.offsetHeight - (o.h * kk) / sc };
       };
 
       // Final card pose: never under the headline, and scaled down when the viewport is too short for both.
       const fit = () => {
         const copyEnd = Math.max(...q('[data-copy-a],[data-copy-b]').map((c) => (c as HTMLElement).offsetTop + (c as HTMLElement).offsetHeight));
         const top = Math.max(subject.offsetTop, copyEnd + 16);
-        const sc = Math.min(1, (stage.clientHeight - top - 12) / 504);
+        const sc = Math.min(1, (stage.clientHeight - top - 12) / subject.offsetHeight);
         return { x: (300 * (1 - sc)) / 2, y: top - subject.offsetTop, sc };
       };
 
       tl.fromTo(scene, { y: 0 }, { y: () => -shift(), duration: 0.14, ease: 'power1.inOut' }, 0)
-        // Focus: Rune settles on its refund card; everything else steps back.
+        // Focus: Lyra settles on its refund card; everything else steps back.
         .to(st, { focus: 1, duration: 0.05 }, 0.15)
         .fromTo(inner.querySelector('[data-veil]'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06 }, 0.15)
         .to(inner.querySelectorAll('[data-cursor-other]'), { autoAlpha: 0, duration: 0.04 }, 0.15)

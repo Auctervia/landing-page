@@ -3,7 +3,7 @@
 // attio.com hero: a big CRM window with four app windows overlapping its edges. Agent cursors work across
 // them (agents.ts). Drawn at a fixed design size (main window 1200×688) and scaled by Hero via --k.
 // Elements agents interact with carry data-target; text they type into carries data-type.
-import type { CSSProperties, ReactNode } from 'react';
+import { useId, type CSSProperties, type ReactNode } from 'react';
 import {
   Activity,
   CalendarDays,
@@ -84,31 +84,66 @@ function Logo({ name, size = 16 }: { name: string; size?: number }) {
   return <img className={s.logo} src={`/logos/${name}.svg`} alt="" width={size} height={size} data-mono={MONO.has(name) ? '' : undefined} />;
 }
 
-// The agents' flower marks, copied from the reference sprite: eight petals and a soft centre.
-const petals: Record<string, string[]> = {
-  rune: ['#F43F5E', '#F97316', '#FACC15', '#22C55E', '#06B6D4', '#3B82F6', '#8B5CF6', '#EC4899'],
-  aether: ['#F472B6', '#E879F9', '#FB7185', '#F9A8D4', '#EC4899', '#F0ABFC', '#FDA4AF', '#DB2777'],
-  syntax: ['#5EEAD4', '#A5F3FC', '#86EFAC', '#99F6E4', '#67E8F9', '#BBF7D0', '#5EEAD4', '#A5F3FC'],
-  theo: ['#38BDF8', '#2DD4BF', '#60A5FA', '#5EEAD4', '#0EA5E9', '#22D3EE', '#3B82F6', '#34D399'],
-  clara: ['#A78BFA', '#C084FC', '#8B5CF6', '#D8B4FE', '#A78BFA', '#C4B5FD', '#9333EA', '#DDD6FE'],
-};
+// The agents' marks: Clara keeps the eight-petal flower; the others each get their own small geometric logo.
+const clara = ['#A78BFA', '#C084FC', '#8B5CF6', '#D8B4FE', '#A78BFA', '#C4B5FD', '#9333EA', '#DDD6FE'];
 export function AgentIcon({ id, size = 16 }: { id: string; size?: number }) {
-  const p = petals[id];
+  const uid = useId().replace(/:/g, '');
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true" className={s.agentIcon}>
-      {p.map((c, i) => (
-        <ellipse key={i} cx="8" cy="3.6" rx="1.55" ry="2.6" fill={c} transform={`rotate(${i * 45} 8 8)`} />
-      ))}
-      <circle cx="8" cy="8" r="1.7" fill={p[0]} opacity=".55" />
+      {id === 'rune' && (
+        // Lyra (support): a glowing orb on a tilted orbit, with a spark of light.
+        <>
+          <defs>
+            <radialGradient id={`${uid}-orb`} cx="35%" cy="30%" r="75%">
+              <stop offset="0" stopColor="#FDE68A" />
+              <stop offset="0.45" stopColor="#FB7185" />
+              <stop offset="1" stopColor="#8B5CF6" />
+            </radialGradient>
+          </defs>
+          <circle cx="8" cy="8" r="5.6" fill={`url(#${uid}-orb)`} />
+          <ellipse cx="8" cy="8" rx="7.4" ry="2.5" fill="none" stroke="#FFFFFF" strokeOpacity="0.9" strokeWidth="0.9" transform="rotate(-28 8 8)" />
+          <path d="M5.6 3.9 L6.1 5.2 L7.4 5.7 L6.1 6.2 L5.6 7.5 L5.1 6.2 L3.8 5.7 L5.1 5.2 Z" fill="#FFFFFF" />
+        </>
+      )}
+      {id === 'aether' && (
+        // Nova (sales): a four-point star with a smaller one set diagonally behind it.
+        <>
+          <path d="M8 1 L9.7 6.3 L15 8 L9.7 9.7 L8 15 L6.3 9.7 L1 8 L6.3 6.3 Z" fill="#E879F9" />
+          <path d="M8 4.6 L8.9 7.1 L11.4 8 L8.9 8.9 L8 11.4 L7.1 8.9 L4.6 8 L7.1 7.1 Z" fill="#FB7185" transform="rotate(45 8 8)" />
+        </>
+      )}
+      {id === 'syntax' && (
+        // Flux (workflows): three staggered bars, a step moving through a flow.
+        <>
+          <rect x="1.5" y="2.5" width="9" height="3.2" rx="1.6" fill="#5EEAD4" />
+          <rect x="5.5" y="6.4" width="9" height="3.2" rx="1.6" fill="#86EFAC" />
+          <rect x="1.5" y="10.3" width="9" height="3.2" rx="1.6" fill="#67E8F9" />
+        </>
+      )}
+      {id === 'theo' && (
+        // Atlas (ops): two peaks, one stacked in front of the other.
+        <>
+          <path d="M6 2.5 L11.5 13 H0.8 Z" fill="#0EA5E9" />
+          <path d="M10.5 6 L15.2 13 H7 Z" fill="#2DD4BF" />
+        </>
+      )}
+      {id === 'clara' && (
+        <>
+          {clara.map((c, i) => (
+            <ellipse key={i} cx="8" cy="3.6" rx="1.55" ry="2.6" fill={c} transform={`rotate(${i * 45} 8 8)`} />
+          ))}
+          <circle cx="8" cy="8" r="1.7" fill={clara[0]} opacity=".55" />
+        </>
+      )}
     </svg>
   );
 }
 
 export const agents = [
-  { id: 'rune', name: 'Rune', role: 'Support', color: '#e11d48' },
-  { id: 'aether', name: 'Aether', role: 'Sales', color: '#c026d3' },
-  { id: 'syntax', name: 'Syntax', role: 'Workflows', color: '#0f766e' },
-  { id: 'theo', name: 'Theo', role: 'Ops', color: '#0369a1' },
+  { id: 'rune', name: 'Lyra', role: 'Support', color: '#e11d48' },
+  { id: 'aether', name: 'Nova', role: 'Sales', color: '#c026d3' },
+  { id: 'syntax', name: 'Flux', role: 'Workflows', color: '#0f766e' },
+  { id: 'theo', name: 'Atlas', role: 'Ops', color: '#0369a1' },
   { id: 'clara', name: 'Clara', role: 'Billing', color: '#7c3aed' },
 ] as const;
 
@@ -351,7 +386,7 @@ function MainWindow() {
   );
 }
 
-/* ---------- satellite: Ask Rune (sidebar-agent / crm-chat) — holds the card that lifts ---------- */
+/* ---------- satellite: Ask Lyra (sidebar-agent / crm-chat) — holds the card that lifts ---------- */
 
 function ChatWindow() {
   return (
@@ -359,7 +394,7 @@ function ChatWindow() {
       <header className={s.topbar}>
         <AgentIcon id="rune" />
         <span className={s.dim}>Agent /</span>
-        <b>Ask Rune</b>
+        <b>Ask Lyra</b>
         <span className={s.push} />
         <span className={s.ghostBtn}>
           <Sparkles size={13} /> Quick Chat
@@ -390,7 +425,7 @@ function ChatWindow() {
                 <Logo name="stripe" size={12} /> payments.refund
               </span>
             </div>
-            {/* The action Rune proposes, inline in its reply. This is what lifts out into the x-ray flow. */}
+            {/* The action Lyra proposes, inline in its reply. This is what lifts out into the x-ray flow. */}
             <div className={s.action} data-lift data-target="refund-card">
               <div className={s.aHead}>
                 <span className={s.aChip}>Proposed action</span>
@@ -412,7 +447,7 @@ function ChatWindow() {
 
       </div>
       <div className={s.composer}>
-        <span className={s.placeholder}>Ask Rune anything…</span>
+        <span className={s.placeholder}>Ask Lyra anything…</span>
         <div className={s.composerBar}>
           <Plus size={14} />
           <AtSign size={14} />
@@ -421,8 +456,12 @@ function ChatWindow() {
             <Code2 size={13} /> Skills
           </span>
           <span className={s.models}>
-            <Logo name="anthropic" size={11} />
-            <Logo name="openai" size={11} />
+            <span className={s.modelDot}>
+              <Logo name="anthropic" size={11} />
+            </span>
+            <span className={s.modelDot}>
+              <Logo name="openai" size={11} />
+            </span>
           </span>
           <span>Model Fusion</span>
           <span className={s.push} />
@@ -441,7 +480,7 @@ function ChatWindow() {
 function WorkflowWindow() {
   const nodes = [
     { icon: <Logo name="zendesk" size={14} />, kind: 'Trigger', title: 'New refund ticket' },
-    { icon: <AgentIcon id="rune" size={15} />, kind: 'Agent', title: 'Rune drafts a resolution', running: true, target: 'wf-node' },
+    { icon: <AgentIcon id="rune" size={15} />, kind: 'Agent', title: 'Lyra drafts a resolution', running: true, target: 'wf-node' },
     { icon: <Logo name="stripe" size={14} />, kind: 'Tool', title: 'payments.refund' },
   ];
   return (
@@ -520,7 +559,7 @@ function TerminalWindow() {
     <Win className={s.term} sat="term" style={{ transformOrigin: '50% 0%' }}>
       <div className={s.termBody} data-target="term">
         <p className={s.termHead}>
-          <AgentIcon id="theo" size={12} /> theo · ops agent · production
+          <AgentIcon id="theo" size={12} /> atlas · ops agent · production
         </p>
         <p>
           <span className={s.prompt}>$</span> <span data-type="term" />
