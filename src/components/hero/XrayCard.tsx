@@ -1,6 +1,7 @@
 // The x-ray card: three layers, after headroom.com. The checked card underneath (FaceB), an x-ray band
 // showing what the action is made of, and the unverified card on top (FaceA), uncovered from above as the
 // band moves down. The band position is the CSS variable --scan on [data-subject] (its top edge, in %).
+import { BadgeX, Clock, FileCheck, FileX, Gavel, ScrollText, ShieldCheck, ShieldQuestion, UserCheck, UserX, type LucideIcon } from 'lucide-react';
 import { Mark } from '../Logo';
 import s from './Xray.module.css';
 
@@ -67,25 +68,35 @@ export function StillCard({ checked }: { checked?: boolean }) {
 function FaceA() {
   return (
     <div className={s.cardA}>
+      <p className={s.cardTitle}>Refund $480.00</p>
       <div className={s.cardHead}>
-        <span className={s.chipA}>Ran 3 minutes ago</span>
+        <span className={s.chipA}>
+          <Clock size={12} strokeWidth={2} aria-hidden="true" /> Ran 3 minutes ago
+        </span>
         <span>Support agent</span>
       </div>
-      <p className={s.cardTitle}>Refund $480.00</p>
       <dl className={s.fieldsA}>
-        {[
-          ['Approved by', '—'],
-          ['Policy', 'Unknown'],
-          ['Evidence', 'Not recorded'],
-          ['Verified by', 'No one'],
-        ].map(([k, v]) => (
+        {(
+          [
+            ['Approved by', '—', UserX],
+            ['Policy', 'Unknown', ShieldQuestion],
+            ['Evidence', 'Not recorded', FileX],
+            ['Verified by', 'No one', BadgeX],
+          ] as [string, string, LucideIcon][]
+        ).map(([k, v, Icon]) => (
           <div key={k}>
-            <dt>{k}</dt>
-            <dd>{v}</dd>
+            <dt>
+              <Icon size={13} strokeWidth={2} aria-hidden="true" /> {k}
+            </dt>
+            <dd>
+              <span>{v}</span>
+            </dd>
           </div>
         ))}
       </dl>
-      <p className={s.footA}>Only in the trace logs</p>
+      <p className={s.footA}>
+        <ScrollText size={14} strokeWidth={2} aria-hidden="true" /> Only in the trace logs
+      </p>
     </div>
   );
 }
@@ -93,12 +104,12 @@ function FaceA() {
 function FaceB({ sealed = false }: { sealed?: boolean }) {
   return (
     <div className={s.cardB}>
+      <p className={s.cardTitle}>Refund $480.00</p>
       <div className={s.cardHead}>
         <span className={s.brandB}>
           <Mark size={14} /> Checked by Auctervia
         </span>
       </div>
-      <p className={s.cardTitle}>Refund $480.00</p>
       <ul className={s.sources}>
         {['Model v4.1', 'Policy v12', 'payments.refund', 'Approvals', 'Order 88213'].map((t) => (
           <li key={t} data-src={sealed ? undefined : ''}>
@@ -107,14 +118,18 @@ function FaceB({ sealed = false }: { sealed?: boolean }) {
         ))}
       </ul>
       <dl className={s.fieldsB}>
-        {[
-          ['Approval', 'None found'],
-          ['Decision', 'Denied before it ran'],
-          ['Record', '#0412 · sealed'],
-          ['Verified by', 'Anyone you share it with'],
-        ].map(([k, v]) => (
+        {(
+          [
+            ['Approval', 'Granted', UserCheck],
+            ['Decision', 'Allowed', Gavel],
+            ['Record', '#0412 · sealed', FileCheck],
+            ['Verified by', '12 tests', ShieldCheck],
+          ] as [string, string, LucideIcon][]
+        ).map(([k, v, Icon]) => (
           <div key={k}>
-            <dt>{k}</dt>
+            <dt>
+              <Icon size={13} strokeWidth={2} aria-hidden="true" /> {k}
+            </dt>
             <dd data-val={sealed ? undefined : ''}>{v}</dd>
           </div>
         ))}

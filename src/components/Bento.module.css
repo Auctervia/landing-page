@@ -83,7 +83,7 @@
 .panel {
   position: absolute;
   left: 12%;
-  right: -2px;
+  right: -26px; /* the card's 24px side padding plus the 2px outline, so the slice runs to the card edge */
   bottom: -2px;
   padding: 14px;
   border-radius: 12px 0 0 0;
@@ -291,8 +291,8 @@
     left: auto;
     right: auto;
     bottom: auto;
-    width: 100%;
-    margin: 0 -2px -2px auto;
+    width: calc(100% + 18px); /* card padding (16px) plus the outline: runs to the card edge */
+    margin: 0 -18px -2px auto;
   }
   .rec {
     grid-template-columns: 44px 1fr auto;
