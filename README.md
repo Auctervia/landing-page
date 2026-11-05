@@ -41,14 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 (slot availability: `GET /api/availability`) and are stored in the `auctervia_bookings` table, which is
 created on first use (`src/lib/db.ts`), then emailed to the team through Resend.
 
-`.env.local` (not committed):
 
-```
-DATABASE_URL=postgres://...                  # Neon pooled connection string
-RESEND_API_KEY=re_...                        # needs a verified auctervia.tech domain in Resend
-RESEND_FROM="Auctervia <userform@auctervia.tech>"
-BOOKING_NOTIFY_EMAIL=a@x.com,b@y.com         # comma-separated
-```
 
 Slots are weekdays, 10:00 to 14:00 and 16:00 to 19:00 IST, in 30-minute steps, up to 60 days ahead
 (`src/lib/booking.ts`), shown in the visitor's own time zone.
