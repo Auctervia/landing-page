@@ -289,6 +289,7 @@
   align-items: center;
   gap: 8px;
   text-align: left;
+  max-height: none; /* the global button cap (36px) made these shorter than the 44px inputs */
 }
 .selectBtn {
   justify-content: space-between;

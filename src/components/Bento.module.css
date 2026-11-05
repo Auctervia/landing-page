@@ -13,7 +13,7 @@
   margin-bottom: 40px;
 }
 .head h2 {
-  max-width: 18ch;
+  max-width: 26ch;
   font-size: clamp(32px, 3.6vw, 52px);
 }
 

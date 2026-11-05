@@ -1,7 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import { useScrub } from '@/lib/useScrub';
-import { alongX, Box, CrateGradient, iso, ringPath, Stamp } from '@/lib/iso';
+import { alongX, Box, CrateGradient, iso, pts, ringPath, Stamp } from '@/lib/iso';
 import s from './Gateway.module.css';
 
 const steps = [
@@ -17,7 +17,7 @@ const at = (x: number, y: number, z: number) => {
   const [px, py] = iso(x, y, z);
   return { left: `${((px - VB.x) / VB.w) * 100}%`, top: `${((py - VB.y) / VB.h) * 100}%` };
 };
-const PIVOT = iso(167, -16, 40);
+const PIVOT = iso(167, -11, 40); // the arm starts at the collar's front face
 const CRATE = 22;
 
 export function Gateway() {
@@ -82,8 +82,25 @@ export function Gateway() {
               </title>
               <Box x={0} y={0} z={-8} w={300} d={90} h={8} />
               <line {...lineAt(4, 45, 296, 45)} className={s.dash} />
+              <Box x={145} y={-51} w={44} d={40} h={5} />
               <Box x={150} y={-46} w={34} d={30} h={56} />
-              <Box x={156} y={-17} z={30} w={22} d={1} h={14} className={s.window} />
+              <Box x={147} y={-49} z={56} w={38} d={34} h={4} />
+              {/* front face: seam, window bezel, pivot collar for the arm */}
+              <g className={s.detail}>
+                <line {...onFront(150, 46, 184, 46)} />
+                {/* side face: recessed panel with status lamps */}
+                <polygon points={pts([iso(184, -42, 8), iso(184, -20, 8), iso(184, -20, 48), iso(184, -42, 48)])} />
+              </g>
+              {[40, 33, 26].map((z, i) => (
+                <polygon key={z} points={pts([iso(184, -36, z), iso(184, -28, z), iso(184, -28, z + 4), iso(184, -36, z + 4)])} className={i === 0 ? s.lampOn : s.lamp} />
+              ))}
+              <Box x={153} y={-16} z={27} w={28} d={2} h={20} />
+              <Box x={156} y={-14} z={30} w={22} d={1} h={14} className={s.window} />
+              {/* etched into the plate: inset border */}
+              <g className={s.plate}>
+                <polygon points={pts([iso(157.5, -13, 31.5), iso(176.5, -13, 31.5), iso(176.5, -13, 42.5), iso(157.5, -13, 42.5)])} />
+              </g>
+              <Box x={162} y={-14} z={35} w={10} d={3} h={10} className={s.collar} />
               <path d={ringPath(149, 45, 0, 26)} className={s.ring} data-ring />
 
               <g data-crate className={s.crate}>
@@ -95,7 +112,15 @@ export function Gateway() {
                 <Stamp x={40} y={34} z={20} size={CRATE} className={s.stamp} data-stamp />
               </g>
 
-              <Box x={165} y={-16} z={38} w={4} d={112} h={4} data-arm className={s.arm} />
+              <Box x={165} y={-11} z={38} w={4} d={107} h={4} data-arm className={s.arm}>
+                {/* hazard stripes along the outer end, on the top and the visible side */}
+                {[54, 68, 82].map((y) => (
+                  <g key={y} className={s.stripe}>
+                    <polygon points={pts([iso(169, y, 38), iso(169, y + 7, 38), iso(169, y + 7, 42), iso(169, y, 42)])} />
+                    <polygon points={pts([iso(165, y, 42), iso(169, y, 42), iso(169, y + 7, 42), iso(165, y + 7, 42)])} />
+                  </g>
+                ))}
+              </Box>
             </svg>
 
             <span className={`chip ${s.tag}`} data-tag="hold" style={at(149, 45, 44)}>
@@ -115,6 +140,13 @@ export function Gateway() {
       </div>
     </section>
   );
+}
+
+// A line on the post's front face (the y = -16 plane), given x and z extents.
+function onFront(x1: number, z1: number, x2: number, z2: number) {
+  const [ax, ay] = iso(x1, -16, z1);
+  const [bx, by] = iso(x2, -16, z2);
+  return { x1: ax, y1: ay, x2: bx, y2: by };
 }
 
 function lineAt(x1: number, y1: number, x2: number, y2: number) {

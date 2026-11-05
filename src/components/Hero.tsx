@@ -55,6 +55,14 @@ export function Hero() {
         return { x: x - subject.offsetLeft, y: y - subject.offsetTop, scale: sc, clip: 504 - (o.h * kk) / sc };
       };
 
+      // Final card pose: never under the headline, and scaled down when the viewport is too short for both.
+      const fit = () => {
+        const copyEnd = Math.max(...q('[data-copy-a],[data-copy-b]').map((c) => (c as HTMLElement).offsetTop + (c as HTMLElement).offsetHeight));
+        const top = Math.max(subject.offsetTop, copyEnd + 16);
+        const sc = Math.min(1, (stage.clientHeight - top - 12) / 504);
+        return { x: (300 * (1 - sc)) / 2, y: top - subject.offsetTop, sc };
+      };
+
       tl.fromTo(scene, { y: 0 }, { y: () => -shift(), duration: 0.14, ease: 'power1.inOut' }, 0)
         // Focus: Rune settles on its refund card; everything else steps back.
         .to(st, { focus: 1, duration: 0.05 }, 0.15)
@@ -66,7 +74,7 @@ export function Hero() {
         .fromTo(
           subject,
           { x: () => from().x, y: () => from().y, scale: () => from().scale, clipPath: () => `inset(0px 0px ${from().clip}px 0px round 8px)` },
-          { x: 0, y: 0, scale: 1, clipPath: 'inset(0px 0px 0px 0px round 8px)', duration: 0.1, ease: 'power2.inOut' },
+          { x: () => fit().x, y: () => fit().y, scale: () => fit().sc, clipPath: 'inset(0px 0px 0px 0px round 8px)', duration: 0.1, ease: 'power2.inOut' },
           0.252,
         )
         .to(card, { autoAlpha: 0, duration: 0.02 }, 0.255)

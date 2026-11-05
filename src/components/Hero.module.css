@@ -119,7 +119,8 @@
 
 .suite {
   /* Keep the main window 12px inside each rule; satellites can overlap outside it. */
-  --mw: calc(min(var(--rule-w), 100vw - 2 * var(--rule-edge)) - 24px);
+  /* Also capped by height (the window is ~2:3, so 1.5 × the free height) so it fits short desktop screens. */
+  --mw: max(640px, min(calc(min(var(--rule-w), 100vw - 2 * var(--rule-edge)) - 24px), calc((100svh - var(--nav-h) - 32px) * 1.5)));
   --k: min(1, tan(atan2(var(--mw), 1200px)));
   --dw: max(1200px, var(--mw));
   --dh: max(800px, calc(var(--dw) * 0.5733));
@@ -133,12 +134,37 @@
     --mw: 66.7vw;
   }
 }
+/* Smaller screens: pull the dashboard up. */
+@media (max-width: 1439px) {
+  .suite {
+    margin-top: clamp(40px, 6vw, 96px);
+  }
+}
 @media (max-width: 767px) {
   .suite {
     --mw: min(calc(100vw - 40px), 430px);
     --k: min(1, tan(atan2(var(--mw), 430px)));
     --dw: 430px;
     --dh: 610px;
+  }
+}
+
+/* Desktop: the title is two lines, sized to fill exactly the space the one-line title and its margins took,
+   so the pill, subline, buttons and dashboard stay where they were. */
+@media (min-width: 768px) {
+  .intro {
+    --block: calc(clamp(32px, 4vw, 60px) + 1.05 * var(--t-display) + clamp(20px, 2.5vw, 36px));
+  }
+  .pill {
+    margin-bottom: 10px;
+  }
+  .title {
+    max-width: 12em;
+    font-size: calc((var(--block) - 20px) / 1.9);
+    line-height: 0.95;
+  }
+  .sub {
+    margin-top: 10px;
   }
 }
 
@@ -204,5 +230,15 @@
 @media (max-width: 767px) {
   .seq {
     height: 480svh;
+  }
+  .copy {
+    top: calc(var(--nav-h) + 16px);
+  }
+  .h2 {
+    font-size: 28px;
+  }
+  .copy p {
+    margin-top: 8px;
+    font-size: 15px;
   }
 }

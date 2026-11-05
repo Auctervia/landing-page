@@ -84,6 +84,13 @@ html {
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
 }
+/* Scrollbars hidden everywhere; scrolling still works. */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
 
 html.lenis,
 html.lenis body {
@@ -190,6 +197,8 @@ svg {
 
 .sr-only {
   position: absolute;
+  top: 0; /* keeps it from sitting after the footer and adding 1px of page height */
+  left: 0;
   width: 1px;
   height: 1px;
   overflow: hidden;
@@ -336,6 +345,17 @@ html.motion [data-reveal] {
   /* content sits this far inside the dashed lines */
   --rule-pad: clamp(24px, 4vw, 56px);
 }
+/* Narrower frame on smaller desktops so content doesn't stretch edge to edge. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  :root {
+    --rule-w: 1120px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  :root {
+    --rule-w: 1280px;
+  }
+}
 .ruled {
   position: relative;
   border-top: 1px solid var(--rule);
@@ -385,6 +405,9 @@ html.motion [data-shimmer] {
   background-position: 100% 0;
   -webkit-background-clip: text;
   background-clip: text;
+  /* The clip ends at the box, so descenders (g, y, p) need padding, offset by margin so layout is unchanged. */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
 }
 html.motion [data-shimmer].shimmer-in {
   animation: shimmer-in 1.2s cubic-bezier(0.33, 0, 0.2, 1) forwards;

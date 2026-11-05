@@ -19,7 +19,7 @@
   gap: clamp(28px, 5svh, 56px);
 }
 .copy h2 {
-  max-width: 12ch;
+  max-width: 16ch;
 }
 
 .steps {
@@ -80,6 +80,59 @@
 
 .window :global(.iso-l) {
   fill: var(--ink);
+}
+
+.detail {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.4;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.detail * {
+  vector-effect: non-scaling-stroke;
+}
+.lamp,
+.lampOn {
+  stroke: var(--ink);
+  stroke-opacity: 0.4;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.lamp {
+  fill: none;
+}
+.lampOn {
+  fill: var(--violet);
+}
+.plate {
+  fill: none;
+  stroke: var(--canvas);
+  stroke-opacity: 0.55;
+  stroke-width: 1;
+}
+.plate * {
+  vector-effect: non-scaling-stroke;
+}
+.plateLed {
+  fill: var(--canvas);
+  opacity: 0.5;
+}
+.plateLedOn {
+  fill: var(--violet);
+}
+.stripe polygon {
+  fill: var(--canvas);
+  opacity: 0.7;
+}
+.bolt {
+  fill: var(--ink);
+  opacity: 0.5;
+}
+.collar :global(.iso-top),
+.collar :global(.iso-l),
+.collar :global(.iso-r) {
+  fill: color-mix(in srgb, var(--ink) 45%, var(--canvas));
 }
 
 .ring {

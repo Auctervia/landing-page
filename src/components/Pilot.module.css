@@ -97,4 +97,13 @@
   .figure svg {
     max-height: 32svh;
   }
+  /* One stage at a time, like Gateway. */
+  .stage {
+    display: none;
+  }
+  .pilot[data-step='0'] .stage[data-i='0'],
+  .pilot[data-step='1'] .stage[data-i='1'],
+  .pilot[data-step='2'] .stage[data-i='2'] {
+    display: grid;
+  }
 }
