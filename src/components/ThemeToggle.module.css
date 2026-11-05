@@ -1,0 +1,27 @@
+.selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--sec-line);
+  border-radius: 8px;
+  color: var(--sec-fg);
+}
+.selector button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+.selector button:hover {
+  background: color-mix(in srgb, var(--sec-fg) 12%, transparent);
+}
+.selector button[aria-pressed='true'] {
+  background: var(--sec-fg);
+  color: var(--sec-bg);
+}
+.selector button:focus-visible {
+  outline-color: var(--sec-fg);
+}

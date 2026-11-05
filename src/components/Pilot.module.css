@@ -1,0 +1,100 @@
+.pilot {
+  height: 250svh;
+  background: var(--canvas);
+}
+
+.grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 112px);
+  max-width: var(--rule-w);
+  padding-inline: var(--rule-pad);
+  margin: 0 auto;
+}
+
+.copy {
+  display: grid;
+  gap: clamp(28px, 5svh, 56px);
+}
+.copy h2 {
+  max-width: 12ch;
+}
+
+.stages {
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  border-left: 1px solid var(--hairline);
+}
+.stage {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0 10px 20px;
+  opacity: 1;
+  position: relative;
+}
+.stage::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: var(--ink);
+  scale: 1 0;
+  transition: scale var(--dur-hover) var(--ease);
+}
+.stage h3 {
+  font-size: 20px;
+}
+.stage p {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 40ch;
+}
+.pilot[data-step='0'] .stage[data-i='0'],
+.pilot[data-step='1'] .stage[data-i='1'],
+.pilot[data-step='2'] .stage[data-i='2'] {
+  opacity: 1;
+}
+.pilot[data-step='0'] .stage[data-i='0']::before,
+.pilot[data-step='1'] .stage[data-i='1']::before,
+.pilot[data-step='2'] .stage[data-i='2']::before {
+  scale: 1 1;
+}
+
+.figure svg {
+  width: 100%;
+  height: auto;
+  max-height: 70svh;
+  overflow: visible;
+}
+
+.crate :global(.iso-top),
+.crate :global(.iso-l),
+.crate :global(.iso-r) {
+  fill: url('#pilot-crate');
+}
+.crate :global(.iso-l) {
+  fill-opacity: 0.75;
+}
+.crate :global(.iso-r) {
+  fill-opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .pilot {
+    height: 220svh;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 16px;
+    padding-top: 72px;
+  }
+  .figure svg {
+    max-height: 32svh;
+  }
+}

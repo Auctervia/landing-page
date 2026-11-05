@@ -1,0 +1,135 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--sec-bg);
+  color: var(--sec-fg);
+  --rule: var(--sec-line);
+  --focus: var(--sec-fg);
+  padding-top: clamp(48px, 7vw, 72px);
+}
+.inner {
+  max-width: var(--rule-w);
+  padding-inline: var(--rule-pad);
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-display);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.line {
+  margin-top: 28px;
+  max-width: 22ch;
+  font-size: clamp(18px, 1.6vw, 21px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.bookLabel {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.book {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  width: min(100%, 368px);
+}
+.bookBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r);
+  background: var(--sec-fg);
+  color: var(--sec-bg);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: clamp(56px, 7vw, 80px);
+}
+.cols[hidden] {
+  display: none;
+}
+.colTitle {
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sec-fg);
+}
+.cols ul {
+  display: grid;
+  gap: 14px;
+  list-style: none;
+}
+.cols a,
+.cols button {
+  display: inline-block;
+  padding-block: 4px;
+  font-size: 15px;
+  color: var(--sec-muted);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease);
+}
+.cols a:hover,
+.cols button:hover {
+  color: var(--sec-fg);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: clamp(48px, 6vw, 72px);
+  padding-top: 24px;
+  border-top: 1px solid var(--sec-line);
+  font-size: 13px;
+  color: var(--sec-muted);
+  opacity: 0.9;
+}
+
+/* The wordmark, set across the container and fading to nothing at the bottom edge. */
+.wordmark {
+  max-width: var(--rule-w);
+  padding-inline: var(--rule-pad);
+  margin: clamp(32px, 5vw, 64px) auto 0;
+  font-family: var(--f-display);
+  font-size: clamp(72px, 15.6vw, 258px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  text-align: center;
+  white-space: nowrap;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sec-fg) 11%, transparent) 0%, color-mix(in srgb, var(--sec-fg) 6%, transparent) 55%, transparent 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+@media (max-width: 767px) {
+  .cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}

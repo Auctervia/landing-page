@@ -1,0 +1,960 @@
+/* Design size: the main window is --dw × --dh (1200×688 up to 1440px screens, wider beyond, so text never
+   scales up). Hero scales the whole suite with --k (origin top left); windows are pinned to its edges.
+   Tokens copied from the reference dashboards (zinc palette, 13px Inter-style UI, 6/8/12px radii). */
+.suite {
+  --tx: #09090b;
+  --tx2: #52525b;
+  --tx3: #71717a;
+  --bd: rgb(0 0 0 / 0.1);
+  --bg2: #fafafa;
+  --bg3: #f4f4f5;
+  --workflow-dot: #d4d4d8;
+  --sh-xs: 0 1px 2px rgb(0 0 0 / 0.05);
+  /* Light palette for the product UI (the page tokens are re-pinned so this stays a product screenshot).
+     Dark values: the html[data-theme='dark'] block at the end of this file. */
+  --white: #fff;
+  --canvas: #faf9f6;
+  --linen: #f1eee9;
+  --hairline: #dedbd6;
+  --ink: #111;
+  --iron: #414141;
+  --muted: #5f5f5f;
+  --allow: #2f6b3f;
+  --allow-bg: #eef3ec;
+  --deny: #a8322a;
+  --deny-bg: #f8ebe9;
+  --c-047857: #047857;
+  --c-0b1d3a: #0b1d3a;
+  --c-1d4ed8: #1d4ed8;
+  --c-1f3c88: #1f3c88;
+  --c-22a35a: #22a35a;
+  --c-b45309: #b45309;
+  --c-be123c: #be123c;
+  --c-ddd6fe: #ddd6fe;
+  --c-e4e4e7: #e4e4e7;
+  --c-ecfdf5: #ecfdf5;
+  --c-eff6ff: #eff6ff;
+  --c-f0f0f2: #f0f0f2;
+  --c-f3f3f5: #f3f3f5;
+  --c-f5f3ff: #f5f3ff;
+  --c-f8fafc: #f8fafc;
+  --c-fbf8ff: #fbf8ff;
+  --c-fcfcfc: #fcfcfc;
+  --c-fcfcfd: #fcfcfd;
+  --c-fff1f2: #fff1f2;
+  --c-fffbeb: #fffbeb;
+  position: relative;
+  width: var(--dw, 1200px);
+  height: var(--dh, 688px);
+  scale: var(--k, 1);
+  transform-origin: 0 0;
+  font-family: var(--f-text);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--tx);
+  text-align: left;
+}
+.suite b {
+  font-weight: 500;
+}
+.dim {
+  color: var(--tx3);
+  flex: none;
+}
+.push {
+  margin-left: auto;
+}
+.sub {
+  color: var(--tx2);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  box-shadow: 0 0 0 1.5px var(--white);
+}
+.logo {
+  flex: none;
+  display: block;
+}
+.stack {
+  display: inline-flex;
+}
+.stack img + img {
+  margin-left: -6px;
+}
+.agentIcon {
+  flex: none;
+}
+.kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  margin-left: 2px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--tx3);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--bd);
+}
+.sep {
+  width: 1px;
+  height: 16px;
+  background: var(--bd);
+  flex: none;
+}
+.ghostBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px 4px 7px;
+  border-radius: 8px;
+  color: var(--tx);
+  white-space: nowrap;
+}
+
+/* Windows, framed like attio.com: light grey shell with traffic lights, white panel, layered shadow. */
+.win {
+  position: absolute;
+  isolation: isolate; /* keeps each window's edge light under the windows stacked above it */
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px 4px;
+  border-radius: 12px;
+  background: var(--c-f3f3f5);
+  box-shadow:
+    0 0 0 1px rgb(11 13 24 / 0.07),
+    0 2px 4px rgb(11 13 24 / 0.04),
+    0 24px 48px -18px rgb(11 13 24 / 0.22);
+}
+.chrome {
+  flex: none;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.lights {
+  display: flex;
+  gap: 7px;
+}
+.lights i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.lights i:nth-child(2) {
+  background: #febc2e;
+}
+.lights i:nth-child(3) {
+  background: #28c840;
+}
+.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--white);
+  box-shadow: 0 0 0 1px var(--bd);
+}
+
+.topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--bd);
+  white-space: nowrap;
+}
+
+/* ---------- main ---------- */
+.main {
+  inset: 0;
+}
+.app {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 210px 1fr;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 8px;
+  background: var(--bg2);
+  border-right: 1px solid var(--bd);
+}
+.wsRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 2px 4px 8px;
+}
+.wsLogo {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--c-0b1d3a), var(--c-1f3c88));
+  color: #fff;
+}
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  background: var(--white);
+  box-shadow:
+    inset 0 0 0 1px var(--bd),
+    var(--sh-xs);
+  color: var(--tx3);
+}
+.sItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 0 8px 0 6px;
+  border-radius: 6px;
+  color: var(--tx2);
+}
+.sItem svg {
+  flex: none;
+}
+.sOn {
+  background: var(--bg3);
+  color: var(--tx);
+  font-weight: 500;
+}
+.sSoon {
+  opacity: 0.5;
+}
+.sRight {
+  margin-left: auto;
+  display: flex;
+}
+.badge {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--c-e4e4e7);
+  font-size: 11px;
+  color: var(--tx2);
+}
+.sLabel {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 14px 0 4px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--tx3);
+}
+.me {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px 2px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--bd);
+}
+.table {
+  flex: 1;
+  overflow: hidden;
+}
+.tr {
+  display: grid;
+  grid-template-columns: 34px 140px 130px 110px 150px 140px 86px 96px 96px 120px 110px 1fr;
+  align-items: center;
+  height: 36px;
+  border-bottom: 1px solid var(--c-f0f0f2);
+  white-space: nowrap;
+}
+.tr > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  height: 100%;
+  border-right: 1px solid var(--c-f0f0f2);
+  overflow: hidden;
+}
+.tr > span:first-child {
+  justify-content: center;
+  padding: 0;
+}
+.th {
+  height: 36px;
+  color: var(--tx2);
+  background: var(--c-fcfcfc);
+}
+.th svg {
+  color: var(--tx3);
+  flex: none;
+}
+.tf {
+  color: var(--tx3);
+  font-size: 12px;
+}
+.trHot {
+  background: var(--c-fbf8ff);
+}
+.acct b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.link {
+  color: var(--tx2);
+}
+.tags {
+  gap: 4px !important;
+}
+.tags i {
+  font-style: normal;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.tBlue {
+  color: var(--c-1d4ed8);
+  background: var(--c-eff6ff);
+}
+.tViolet {
+  color: var(--tx2);
+  background: var(--c-f5f3ff);
+}
+.tGreen {
+  color: var(--c-047857);
+  background: var(--c-ecfdf5);
+}
+.tSlate {
+  color: var(--tx2);
+  background: var(--c-f8fafc);
+}
+.tAmber {
+  color: var(--c-b45309);
+  background: var(--c-fffbeb);
+}
+.tRose {
+  color: var(--c-be123c);
+  background: var(--c-fff1f2);
+}
+.lead {
+  color: var(--tx);
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.stage {
+  font-style: normal;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+.stLive {
+  color: var(--c-047857);
+  background: var(--c-ecfdf5);
+}
+.stExp {
+  color: var(--tx2);
+  background: var(--c-f5f3ff);
+}
+.stPilot {
+  color: var(--c-1d4ed8);
+  background: var(--c-eff6ff);
+}
+.stRenew {
+  color: var(--c-b45309);
+  background: var(--c-fffbeb);
+}
+.health {
+  gap: 8px !important;
+}
+.health i {
+  display: block;
+  height: 4px;
+  max-width: 56px;
+  flex: none;
+  border-radius: 2px;
+  background: var(--c-22a35a);
+}
+.health i.low {
+  background: #e0a526;
+}
+.health em {
+  font-style: normal;
+  color: var(--tx2);
+  font-variant-numeric: tabular-nums;
+}
+/* The tag Aether types in; hidden until it has text. */
+.tagNew:has(span:empty) {
+  display: none;
+}
+.veil {
+  position: absolute;
+  inset: -200px -260px;
+  z-index: 5;
+  background: var(--veil);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- satellites ---------- */
+.chat {
+  z-index: 6;
+  right: -150px;
+  top: -24px;
+  width: 450px;
+  height: 650px;
+}
+.agentTabs {
+  flex: none;
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--bd);
+}
+.agentTabs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px 4px 7px;
+  border-radius: 6px;
+  color: var(--tx2);
+}
+.agentTabs .tabOn {
+  background: var(--bg3);
+  color: var(--tx);
+  font-weight: 500;
+}
+.thread {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 16px 8px;
+  overflow: hidden;
+}
+.userMsg {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.userMsg p {
+  max-width: 270px;
+  padding: 8px 11px;
+  border-radius: 12px 12px 4px 12px;
+  background: var(--bg3);
+}
+.botMsg {
+  display: flex;
+  gap: 9px;
+}
+.botMsg p {
+  color: var(--tx);
+}
+.toolChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.toolChips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--tx2);
+  background: var(--white);
+  box-shadow:
+    inset 0 0 0 1px var(--bd),
+    var(--sh-xs);
+}
+
+/* The card that lifts: the top of it matches the top of the x-ray card. */
+/* Inline in Rune's reply: a flat attachment, like the tool chips, not a card floating over the thread. */
+.action {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--bg2);
+  box-shadow: inset 0 0 0 1px var(--bd);
+  transition: box-shadow var(--dur-hover) var(--ease), background var(--dur-hover) var(--ease);
+}
+.aHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--tx3);
+}
+.aChip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--linen);
+  color: var(--iron);
+}
+.pending {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--violet);
+  color: var(--white);
+  opacity: 0;
+  transition: opacity var(--dur-hover) var(--ease);
+}
+.aTitle {
+  margin: 8px 0 3px;
+  font-family: var(--f-display);
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.aBtns {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.primary,
+.secondary {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.primary {
+  background: var(--tx);
+  color: var(--white);
+}
+.secondary {
+  box-shadow:
+    inset 0 0 0 1px var(--bd),
+    var(--sh-xs);
+}
+.action:global(.is-pending) {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--violet);
+}
+.action:global(.is-pending) .pending {
+  opacity: 1;
+}
+
+.composer {
+  flex: none;
+  margin: 8px 12px 12px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow:
+    0 0 0 1px var(--bd),
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 6px 20px -6px rgb(0 0 0 / 0.1);
+}
+.placeholder {
+  display: block;
+  min-height: 34px;
+  color: var(--tx3);
+}
+.composerBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tx2);
+}
+.models {
+  display: inline-flex;
+}
+.models img {
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--bg3);
+  box-shadow: 0 0 0 1.5px var(--white);
+  width: 16px;
+  height: 16px;
+}
+.models img + img {
+  margin-left: -4px;
+}
+.send {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--tx);
+  color: var(--white);
+}
+
+.flow {
+  left: -200px;
+  top: calc(100% - 400px);
+  width: 450px;
+  height: 340px;
+}
+.runBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--tx);
+  color: var(--white);
+  font-weight: 500;
+}
+.canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--c-fcfcfd);
+  background-image: radial-gradient(var(--workflow-dot) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+.nodeWrap {
+  display: grid;
+  justify-items: center;
+}
+.node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 248px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow:
+    0 0 0 1px var(--bd),
+    var(--sh-xs);
+}
+.node > span:nth-child(2) {
+  display: grid;
+  flex: 1;
+}
+.node i {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--tx3);
+}
+.nodeIcon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--bd);
+  flex: none;
+}
+.running {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--tx2);
+  background: var(--c-f5f3ff);
+  box-shadow: inset 0 0 0 1px var(--c-ddd6fe);
+}
+.edge {
+  width: 1px;
+  height: 12px;
+  background: #d4d4d8;
+}
+.apps {
+  left: -190px;
+  top: 20px;
+  width: 410px;
+  height: 278px;
+}
+.appList {
+  list-style: none;
+  padding: 4px 6px;
+}
+.appList li {
+  display: grid;
+  grid-template-columns: 22px auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 6px;
+  border-bottom: 1px solid var(--c-f0f0f2);
+  white-space: nowrap;
+}
+.appList li:last-child {
+  border-bottom: 0;
+}
+.appList li > .dim {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.connected {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--c-047857);
+  background: var(--c-ecfdf5);
+}
+.connectGhost {
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow:
+    inset 0 0 0 1px var(--bd),
+    var(--sh-xs);
+}
+.appLogo {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--bd);
+}
+.connect {
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--tx);
+  color: var(--white);
+}
+
+/* Terminal: the only place Geist Mono is used. */
+.term {
+  right: 220px;
+  top: calc(100% - 196px);
+  width: 400px;
+  height: 214px;
+  background: #2a2a2e;
+}
+.term .panel {
+  background: #121214;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+.termBody {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: #e8e8ea;
+}
+.termHead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8a8a92;
+}
+.prompt {
+  color: #a5b4fc;
+}
+.caret {
+  display: inline-block;
+  width: 6px;
+  height: 13px;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: #e8e8ea;
+  animation: caret 1s steps(2) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+.termBody .dim {
+  color: #8a8a92;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ---------- agent cursors: arrow + name pill with the agent's mark ---------- */
+.cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.arrow path {
+  fill: var(--c);
+  stroke: var(--white);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.name {
+  position: absolute;
+  left: 17px;
+  top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--c);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px -4px rgb(0 0 0 / 0.35);
+}
+.ripple {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--c);
+  opacity: 0;
+}
+
+/* Full-width main windows still leave the floating product panels inside the viewport. */
+@media (min-width: 1024px) {
+  .apps {
+    left: max(-190px, calc((var(--mw) - 100vw) / 2 + 12px));
+  }
+  .flow {
+    left: max(-200px, calc((var(--mw) - 100vw) / 2 + 12px));
+  }
+  .chat {
+    right: max(-150px, calc((var(--mw) - 100vw) / 2 + 12px));
+  }
+}
+/* Phones: only the agent chat (with the card) is shown, as its own window. */
+@media (max-width: 767px) {
+  .suite {
+    width: 430px;
+    height: 610px;
+  }
+  .main,
+  .apps,
+  .flow,
+  .term,
+  .cursor:not([data-cursor='rune']) {
+    display: none;
+  }
+  .chat {
+    right: auto;
+    left: 0;
+    top: 0;
+    width: 430px;
+    height: 610px;
+  }
+}
+
+/* Entrance (fill-mode backwards only, so scroll-driven styles take over once it ends). */
+:global(html.motion) .suite {
+  animation: suiteIn 1.1s var(--ease) 0.65s backwards;
+}
+:global(html.motion) .win {
+  animation: winIn 0.9s var(--ease) backwards;
+}
+:global(html.motion) .main {
+  animation-delay: 0.4s;
+}
+:global(html.motion) .apps {
+  animation-delay: 0.5s;
+}
+:global(html.motion) .chat {
+  animation-delay: 0.6s;
+}
+:global(html.motion) .flow {
+  animation-delay: 0.7s;
+}
+:global(html.motion) .term {
+  animation-delay: 0.8s;
+}
+:global(html.motion) .cursor {
+  animation: winIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1s backwards;
+}
+@keyframes suiteIn {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+@keyframes winIn {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    filter: blur(4px);
+  }
+}
+
+/* Dark palette for the product UI. Surfaces drop to near-black, tinted pills keep their hue at low
+   lightness, tinted text lifts. Generated from the light palette, then tuned by eye. */
+:global(html[data-theme='dark']) .suite {
+  --tx: #ededf0;
+  --tx2: #a8a8b2;
+  --tx3: #94949e;
+  --bd: rgb(255 255 255 / 0.1);
+  --bg2: #1c1c1f;
+  --bg3: #242427;
+  --workflow-dot: #36363b;
+  --sh-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --white: #18181a;
+  --canvas: #141416;
+  --linen: #202023;
+  --hairline: #2c2c30;
+  --ink: #ededf0;
+  --iron: #c9c9cf;
+  --muted: #9a9aa3;
+  --allow: #6fcf8c;
+  --allow-bg: #12261a;
+  --deny: #f08a80;
+  --deny-bg: #2a1614;
+  --c-047857: #82edcf;
+  --c-0b1d3a: #0b1d3a;
+  --c-1d4ed8: #829eed;
+  --c-1f3c88: #1f3c88;
+  --c-22a35a: #82edb1;
+  --c-b45309: #edb082;
+  --c-be123c: #ed829c;
+  --c-ddd6fe: #3d3470;
+  --c-e4e4e7: #2e2e31;
+  --c-ecfdf5: #1c3b2c;
+  --c-eff6ff: #1c293b;
+  --c-f0f0f2: #26262a;
+  --c-f3f3f5: #232326;
+  --c-f5f3ff: #211c3b;
+  --c-f8fafc: #1f2228;
+  --c-fbf8ff: #1d1a2c;
+  --c-fcfcfc: #1a1a1c;
+  --c-fcfcfd: #1a1a1c;
+  --c-fff1f2: #3b1c1e;
+  --c-fffbeb: #3b341c;
+}

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local agent and browser audit artifacts
+/.claude/
+/.jury/
+/.playwright/
+/.playwright-cli/
+/skills-lock.json

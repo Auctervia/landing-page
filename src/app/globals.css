@@ -1,49 +1,464 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canvas: #faf9f6;
+  --linen: #f1eee9;
+  --stone: #e6e2db;
+  --hairline: #dedbd6;
+  --white: #ffffff;
+  --ink: #111111;
+  --ink-2: #1b1b1b;
+  --iron: #414141;
+  --muted: #5f5f5f;
+  --violet: var(--ink);
+  --violet-2: var(--iron);
+  --reveal-blue: #498fff;
+  --reveal-coral: #ff7a7a;
+  --reveal-amber: #ffbc74;
+  --reveal-gradient: linear-gradient(110deg, var(--reveal-blue), var(--reveal-coral) 52%, var(--reveal-amber));
+  --allow: #2f6b3f;
+  --allow-bg: #eef3ec;
+  --deny: #a8322a;
+  --deny-bg: #f8ebe9;
+  --on-ink: #f2f0ec;
+  --on-ink-muted: #a3a09a;
+  --line-ink: #2c2c2c;
+  /* The inverted band (Why now, footer): dark on the light theme, light on the dark one. */
+  --sec-bg: #0b0b0c;
+  --sec-fg: #f5f4f1;
+  --sec-dim: #45484f;
+  --sec-muted: #a3a6af;
+  --sec-line: rgb(255 255 255 / 0.1);
+  --sec-accent: #b9b7b2;
+  --hero-ground: var(--canvas);
+  /* surfaces and lines used by the cards */
+  --card-line: #ebe9e4;
+  --card-line-hover: #dcd9d2;
+  --divider: #f0efec;
+  --divider-soft: #f6f5f2;
+  --shadow-card: 0 18px 40px -24px rgb(17 17 17 / 0.25);
+  --glow-violet: #e5e3df;
+  --glow-warm: #e5e3df;
+  --glow-green: #e5e3df;
+  --ok: #22a35a;
+  --warn: #c98a0b;
+  --warn-text: #a06c06;
+  --crate-deny: #f1d9d5;
+  --veil: rgb(255 255 255 / 0.62);
+  --faint: #6f6a62;
+
+  --f-display: var(--font-switzer), 'Helvetica Neue', Arial, sans-serif;
+  --f-text: var(--font-inter-tight), 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --nav-h: 68px;
+
+  /* One type scale. Display > h2 > h3 > lede > body > small, each with its own line-height. */
+  --t-hero: clamp(42px, 6.4vw, 108px);
+  --t-display: clamp(38px, 4.45vw, 64px);
+  --t-h2: clamp(32px, 3.6vw, 52px);
+  --t-h3: clamp(18px, 1.4vw, 20px);
+  --t-lede: clamp(16px, 1.25vw, 18px);
+  --t-body: 16px;
+  --t-small: 14px;
+  --section-y: clamp(96px, 14svh, 160px);
+
+  /* Motion: two eases, a duration per role. */
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-press: 0.15s;
+  --dur-hover: 0.25s;
+  --dur-reveal: 0.4s;
+
+  --gutter: clamp(16px, 4vw, 64px);
+  --r: 8px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  height: 100%;
+  background: var(--canvas);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--f-text);
+  font-size: var(--t-body);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--t-hero);
+}
+h2 {
+  font-size: var(--t-h2);
+}
+h3 {
+  font-size: var(--t-h3);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-underline-offset: 0.2em;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--r);
+  max-height: 36px;
+}
+button,
+.btn,
+button *,
+.btn * {
+  transition: none !important;
+}
+::selection {
+  background: var(--ink);
+  color: var(--canvas);
+}
+:target,
+:focus-visible {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+svg {
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus, var(--violet));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.on-dark :focus-visible,
+.on-violet :focus-visible {
+  outline-color: var(--white);
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: var(--r);
+  translate: 0 -200%;
+  transition: translate var(--dur-hover) var(--ease);
+}
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.lede {
+  color: var(--muted);
+  max-width: 46ch;
+  font-size: var(--t-lede);
+  line-height: 1.5;
+}
+.on-dark .lede {
+  color: var(--on-ink-muted);
+}
+
+/* Static neutral controls; emphasis comes from fill and border, not motion. */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink);
+  color: var(--white);
+}
+.btn--light {
+  background: var(--white);
+  color: var(--ink);
+}
+.btn--ghost {
+  background: transparent;
+  color: currentColor;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+/* Reveals: hidden only when JS + motion are on (flags script in the layout head). */
+html.motion [data-split],
+html.motion [data-reveal] {
+  visibility: hidden;
+}
+.split-line {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* Section shells */
+.section {
+  position: relative;
+  padding: 0 var(--gutter);
+}
+.on-dark {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.on-violet {
+  background: var(--violet);
+  color: var(--white);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  background: var(--linen);
+  color: var(--iron);
+  white-space: nowrap;
+}
+.chip--allow {
+  background: var(--allow-bg);
+  color: var(--allow);
+}
+.chip--deny {
+  background: var(--deny-bg);
+  color: var(--deny);
+}
+.chip--violet {
+  background: var(--violet);
+  color: var(--white);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Isometric figure faces (src/lib/iso.tsx) */
+.iso-top {
+  fill: var(--white);
+}
+.iso-l {
+  fill: var(--canvas);
+}
+.iso-r {
+  fill: var(--linen);
+}
+.iso-line {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+}
+
+/* Section margin and separator lines, after tryprofound.com: dashed verticals at the container edges and a
+   solid hairline across the full width where each section starts. `.ruled` on a section draws all three;
+   `.rules` is the same verticals as a standalone layer (for stages that cover their section). */
+:root {
+  --rule: #e3dfd7;
+  /* One frame for every section: the Why-now frame. Rule lines sit on it; content sits --rule-pad inside. */
+  --rule-w: 1440px;
+  --rule-edge: 12px;
+  /* content sits this far inside the dashed lines */
+  --rule-pad: clamp(24px, 4vw, 56px);
+}
+.ruled {
+  position: relative;
+  border-top: 1px solid var(--rule);
+  padding-inline: 0; /* the section's container carries the gutter, so every section is the same width */
+}
+.ruled::before,
+.ruled::after,
+.rules::before,
+.rules::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed var(--rule);
+  pointer-events: none;
+}
+.ruled::before,
+.rules::before {
+  left: max(var(--rule-edge), calc(50% - var(--rule-w) / 2));
+}
+.ruled::after,
+.rules::after {
+  right: max(var(--rule-edge), calc(50% - var(--rule-w) / 2));
+}
+.rules {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Heading reveal after beside.com: faint ink until it enters, then a blue, coral and amber band sweeps
+   left to right and leaves the heading in full ink. Text stays real text (gradient clipped to it). */
+html.motion [data-shimmer] {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--reveal-ink, var(--ink)) 0%,
+    var(--reveal-ink, var(--ink)) 40%,
+    var(--reveal-blue) 45%,
+    var(--reveal-coral) 50%,
+    var(--reveal-amber) 55%,
+    color-mix(in srgb, var(--reveal-ink, var(--ink)) 20%, transparent) 60%,
+    color-mix(in srgb, var(--reveal-ink, var(--ink)) 20%, transparent) 100%
+  );
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+html.motion [data-shimmer].shimmer-in {
+  animation: shimmer-in 1.2s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+}
+html.motion [data-shimmer]:not([data-scroll-shimmer]) {
+  opacity: 0;
+}
+@keyframes shimmer-in {
+  15% {
+    opacity: 1;
+  }
+  to {
+    background-position: 0% 0;
+    opacity: 1;
+  }
+}
+
+/* Dark mode (Alt/Option + D): page and dashboard surfaces flip; the inverted band becomes light. */
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #0e0e0f;
+  --linen: #1b1b1d;
+  --stone: #242426;
+  --hairline: #2a2a2d;
+  --white: #151517;
+  --ink: #f2f0ec;
+  --iron: #cfccc6;
+  --muted: #a09d97;
+  --allow-bg: #15261b;
+  --deny-bg: #2a1614;
+  --allow: #7fcf98;
+  --deny: #f08a80;
+  --rule: #26262a;
+  --sec-bg: #f4f2ee;
+  --sec-fg: #111111;
+  --sec-dim: #c7c4bd;
+  --sec-muted: #5f5f5f;
+  --sec-line: rgb(0 0 0 / 0.1);
+  --sec-accent: #414141;
+  --hero-ground: var(--canvas);
+  --card-line: rgb(255 255 255 / 0.1);
+  --card-line-hover: rgb(255 255 255 / 0.18);
+  --divider: rgb(255 255 255 / 0.07);
+  --divider-soft: rgb(255 255 255 / 0.05);
+  --shadow-card: 0 18px 40px -24px rgb(0 0 0 / 0.8);
+  --glow-violet: rgb(255 255 255 / 0.06);
+  --glow-warm: rgb(255 255 255 / 0.06);
+  --glow-green: rgb(255 255 255 / 0.06);
+  --ok: #4fc47f;
+  --warn: #e0a526;
+  --warn-text: #f0c15a;
+  --crate-deny: #3a1f1c;
+  --veil: color-mix(in srgb, var(--canvas) 66%, transparent);
+  --faint: #9a968f;
+}
+
+html[data-theme='dark'] :focus-visible {
+  outline-color: var(--focus, #fff);
+}
+/* Theme switch: a short colour cross-fade, set by ThemeToggle for 350ms only (never during scroll motion). */
+html.theming,
+html.theming *,
+html.theming *::before,
+html.theming *::after {
+  transition:
+    background-color var(--dur-hover) ease,
+    color var(--dur-hover) ease,
+    border-color var(--dur-hover) ease,
+    fill var(--dur-hover) ease,
+    stroke var(--dur-hover) ease,
+    box-shadow var(--dur-hover) ease !important;
+}
+
+/* Black logos disappear on dark surfaces. */
+html[data-theme='dark'] img[data-mono] {
+  filter: invert(1);
 }

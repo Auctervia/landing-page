@@ -1,0 +1,190 @@
+/* Pulled up under the hero (attio.com: -mt-[100svh], z-0) so the hero scrolls away to reveal it. */
+.why {
+  --reveal-ink: var(--sec-fg);
+  position: relative;
+  z-index: 0;
+  margin-top: -100svh;
+  height: 400svh;
+  background: var(--sec-bg);
+  color: var(--sec-fg);
+}
+
+.stage {
+  background: var(--sec-bg);
+}
+
+/* 1440px container with hairline sides and a dotted ground, as in the reference. */
+.box {
+  position: absolute;
+  top: var(--nav-h);
+  bottom: 0;
+  left: max(var(--rule-edge), calc(50% - var(--rule-w) / 2));
+  right: max(var(--rule-edge), calc(50% - var(--rule-w) / 2));
+  border-inline: 1px solid var(--sec-line);
+  background-image: radial-gradient(color-mix(in srgb, var(--sec-fg) 10%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.statement {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--nav-h) / 2);
+  width: min(24ch, calc(100vw - 2 * var(--gutter)));
+  transform: translate(-50%, -50%);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-align: left;
+  text-wrap: balance;
+  color: var(--sec-fg);
+  will-change: transform;
+}
+/* Words use the same blue/coral/amber sweep as the other section headings. */
+.word {
+  display: inline-block;
+  padding-block: 0.08em 0.16em;
+  margin-block: -0.08em -0.16em;
+  color: var(--sec-dim);
+}
+.word.on {
+  color: var(--sec-fg);
+}
+:global(html.motion) .word {
+  background-image: linear-gradient(90deg, var(--sec-fg) 0%, var(--sec-fg) 40%, var(--reveal-blue) 45%, var(--reveal-coral) 50%, var(--reveal-amber) 55%, var(--sec-dim) 60%, var(--sec-dim) 100%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+:global(html.motion) .word.on {
+  animation: wordReveal 0.65s var(--ease) forwards;
+}
+@keyframes wordReveal {
+  to {
+    background-position: 0% 0;
+  }
+}
+:global(html:not(.motion)) .word {
+  color: var(--sec-fg);
+}
+
+.chart {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 70%;
+}
+.tick {
+  stroke: var(--sec-accent);
+  stroke-opacity: 0.16;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.adopt,
+.gov {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.adopt {
+  stroke: var(--sec-accent);
+  stroke-width: 2;
+}
+.gov {
+  stroke: color-mix(in srgb, var(--sec-fg) 38%, transparent);
+  stroke-width: 1.5;
+}
+.trail {
+  fill: none;
+  stroke: url('#why-trail');
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+}
+.legend {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--sec-muted);
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend span::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+}
+.legAdopt::before {
+  background: var(--sec-accent);
+}
+.legGov::before {
+  background: color-mix(in srgb, var(--sec-fg) 38%, transparent);
+}
+
+.stats {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  width: min(480px, calc(100% - 2 * var(--rule-pad) - 2 * var(--rule-edge)));
+}
+.stat {
+  display: grid;
+  gap: 4px;
+  padding-left: 14px;
+  border-left: 2px solid var(--sec-accent);
+}
+.stat dt {
+  font-family: var(--f-display);
+  font-size: clamp(30px, 2.6vw, 38px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat dd {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--sec-muted);
+}
+.src {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--sec-muted);
+  opacity: 0.75;
+}
+
+/* Reduced motion: no overlap, everything in its final place. */
+:global(html:not(.motion)) .why {
+  margin-top: 0;
+  height: 100svh;
+}
+
+@media (max-width: 767px) {
+  .why {
+    height: 360svh;
+  }
+  .chart {
+    height: 42%;
+  }
+  .stats {
+    gap: 18px;
+  }
+  .stat dt {
+    font-size: 34px;
+  }
+  .stat dd {
+    font-size: 15px;
+  }
+  .legend {
+    display: none;
+  }
+}

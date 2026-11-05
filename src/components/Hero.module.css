@@ -1,0 +1,208 @@
+.seq {
+  /* sits above Why now, which is pulled up underneath it and revealed as the hero scrolls away */
+  position: relative;
+  z-index: 1;
+  height: 560svh;
+  background: var(--hero-ground);
+}
+
+.stage {
+  background: var(--hero-ground);
+}
+
+.rules {
+  z-index: 1;
+}
+.cream {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: var(--canvas);
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Copy and suite in one column that scrolls as a unit. */
+.scene {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Sizes and spacing measured on attio.com at 1440px: 64px headline, 36px to an 18px two-line subline,
+   24px to 36px buttons, the window about 136px below. */
+.intro {
+  display: grid;
+  justify-items: center;
+  padding: calc(var(--nav-h) + clamp(40px, 8svh, 100px)) var(--gutter) 0;
+  text-align: center;
+}
+/* attio.com's announcement pill: 13px, hairline, a soft sheen sweeping its lower edge. */
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: clamp(32px, 4vw, 60px);
+  padding: 5px 8px 5px 12px;
+  border-radius: var(--r);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  box-shadow:
+    inset 0 0 0 1px var(--hairline),
+    0 1px 2px rgb(0 0 0 / 0.04);
+  overflow: hidden;
+}
+.pill:hover,
+.pill:focus-visible {
+  box-shadow:
+    inset 0 0 0 1px var(--ink),
+    0 1px 2px rgb(0 0 0 / 0.04);
+}
+.title {
+  max-width: 100%;
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+  font-size: var(--t-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+.sub {
+  margin-top: clamp(20px, 2.5vw, 36px);
+  max-width: 30em;
+  color: var(--muted);
+  font-size: var(--t-lede);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.outline,
+.primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.outline {
+  background: var(--white);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow:
+    inset 0 0 0 1px var(--hairline),
+    0 1px 2px rgb(0 0 0 / 0.05);
+}
+.outline:hover,
+.outline:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.suite {
+  /* Keep the main window 12px inside each rule; satellites can overlap outside it. */
+  --mw: calc(min(var(--rule-w), 100vw - 2 * var(--rule-edge)) - 24px);
+  --k: min(1, tan(atan2(var(--mw), 1200px)));
+  --dw: max(1200px, var(--mw));
+  --dh: max(800px, calc(var(--dw) * 0.5733));
+  position: relative;
+  width: var(--mw);
+  height: calc(var(--dh) * var(--k));
+  margin-top: clamp(64px, 9.5vw, 136px);
+}
+@media (max-width: 1023px) {
+  .suite {
+    --mw: 66.7vw;
+  }
+}
+@media (max-width: 767px) {
+  .suite {
+    --mw: min(calc(100vw - 40px), 430px);
+    --k: min(1, tan(atan2(var(--mw), 430px)));
+    --dw: 430px;
+    --dh: 610px;
+  }
+}
+
+/* Problem and proof headlines over the x-ray card. */
+.copy {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(var(--nav-h) + clamp(24px, 5svh, 64px));
+  padding: 0 var(--gutter);
+  text-align: center;
+  color: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+}
+.h2 {
+  font-size: var(--t-h2);
+  font-weight: 400;
+  max-width: 20ch;
+  margin: 0 auto;
+}
+.copy p {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: var(--t-lede);
+}
+
+/* Reduced motion / no JS: the scroll story as a still layout under the hero. */
+.still {
+  display: none;
+}
+:global(html:not(.motion)) .seq {
+  height: auto;
+}
+:global(html:not(.motion)) .stage {
+  position: relative;
+  height: auto;
+  min-height: 100svh;
+  padding-bottom: 64px;
+}
+:global(html:not(.motion)) .scene {
+  position: relative;
+}
+:global(html:not(.motion)) .copy,
+:global(html:not(.motion)) .stage [data-subject] {
+  display: none;
+}
+:global(html:not(.motion)) .still {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 64px;
+  padding: 96px var(--gutter);
+  background: var(--canvas);
+  color: var(--ink);
+  text-align: center;
+}
+.still > div > p {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 767px) {
+  .seq {
+    height: 480svh;
+  }
+}
