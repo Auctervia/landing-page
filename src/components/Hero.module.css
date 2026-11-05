@@ -188,7 +188,7 @@
   margin: 0 auto;
 }
 .copy p {
-  margin-top: 12px;
+  margin-top: 20px;
   color: var(--muted);
   font-size: var(--t-lede);
 }
@@ -238,7 +238,9 @@
     font-size: 32px;
   }
   .copy p {
-    margin-top: 8px;
+    margin-top: 14px;
+    max-width: 28ch;
+    margin-inline: auto;
     font-size: 16px;
   }
 }

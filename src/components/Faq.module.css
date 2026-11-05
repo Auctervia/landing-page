@@ -60,3 +60,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 900px) {
+  /* The global .section padding shorthand zeroes the block padding above, so on phones the heading sat on the rule line. */
+  section.faq {
+    padding-block: 64px;
+  }
+}

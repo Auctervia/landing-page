@@ -58,7 +58,7 @@ export function Hero() {
       // Final card pose: never under the headline, and scaled down when the viewport is too short for both.
       const fit = () => {
         const copyEnd = Math.max(...q('[data-copy-a],[data-copy-b]').map((c) => (c as HTMLElement).offsetTop + (c as HTMLElement).offsetHeight));
-        const top = Math.max(subject.offsetTop, copyEnd + 16);
+        const top = Math.max(subject.offsetTop, copyEnd + (innerWidth < 768 ? 32 : 40)); // breathing room under the copy
         const sc = Math.min(1, (stage.clientHeight - top - 12) / subject.offsetHeight);
         return { x: (300 * (1 - sc)) / 2, y: top - subject.offsetTop, sc };
       };
