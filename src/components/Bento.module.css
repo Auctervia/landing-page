@@ -1,4 +1,5 @@
-.bento {
+/* `section.bento` (not `.bento`): in the production CSS order the global `.section` padding shorthand wins over a lone class and zeroes the block padding. */
+section.bento {
   background: var(--canvas);
   padding-block: var(--section-y);
 }

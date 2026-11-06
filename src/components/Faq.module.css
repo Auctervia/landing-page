@@ -1,4 +1,5 @@
-.faq {
+/* `section.faq`: see Bento.module.css, a lone class loses to the global .section padding in the production CSS order. */
+section.faq {
   background: var(--canvas);
   padding-block: var(--section-y);
 }
