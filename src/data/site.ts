@@ -1,7 +1,7 @@
 // placeholder: true — replace url and email with the real ones before launch.
 export const site = {
   name: 'Auctervia',
-  url: 'https://auctervia.com',
+  url: 'https://auctervia.tech',
   email: 'hello@auctervia.com',
   title: 'Auctervia: proof for every action your agents take',
   description:
