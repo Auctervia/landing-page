@@ -31,6 +31,21 @@ export function ThemeSelector() {
   );
 }
 
+// The new theme is revealed top to bottom behind a thin line carrying the refund card's gradient.
+function sweep(apply: () => void, vt: typeof document.startViewTransition) {
+  const line = document.createElement('div');
+  line.className = 'theme-sweep';
+  document.body.append(line);
+  const t = vt(apply);
+  t.ready.then(() => {
+    const opts = { duration: 800, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' as const };
+    const root = document.documentElement;
+    root.animate({ clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0 0)'] }, { ...opts, pseudoElement: '::view-transition-new(root)' });
+    root.animate({ transform: ['translateY(0)', 'translateY(100vh)'] }, { ...opts, pseudoElement: '::view-transition-group(theme-sweep)' });
+  });
+  t.finished.finally(() => line.remove());
+}
+
 export function ThemeToggle() {
   const [status, setStatus] = useState('');
 
@@ -45,8 +60,12 @@ export function ThemeToggle() {
     };
     const select = (mode: Mode) => {
       const root = document.documentElement;
-      root.classList.add('theming');
-      apply(mode);
+      const vt = document.startViewTransition?.bind(document);
+      if (vt && !matchMedia('(prefers-reduced-motion: reduce)').matches) sweep(() => apply(mode), vt);
+      else {
+        root.classList.add('theming');
+        apply(mode);
+      }
       clearTimeout(timer);
       timer = setTimeout(() => root.classList.remove('theming'), 350);
       setStatus(mode === 'system' ? 'System color mode on' : `${mode === 'dark' ? 'Dark' : 'Light'} mode on`);

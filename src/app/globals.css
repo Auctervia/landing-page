@@ -486,3 +486,23 @@ html.theming *::after {
 html[data-theme='dark'] img[data-mono] {
   filter: invert(1);
 }
+
+/* Colour-mode sweep (ThemeToggle): the line and the reveal are animated from script. */
+.theme-sweep {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--reveal-blue), var(--reveal-coral) 52%, var(--reveal-amber));
+  view-transition-name: theme-sweep;
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-group(theme-sweep),
+::view-transition-old(theme-sweep),
+::view-transition-new(theme-sweep) {
+  animation: none;
+}
